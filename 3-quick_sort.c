@@ -1,44 +1,71 @@
 #include "sort.h"
 
 /**
- * bubble_sort - sorts an array of integers in ascending order using the
- *               Bubble sort algorithm
- * @array: pointer to the first element of the array to sort
- * @size: number of elements in the array
+ * partition - partitions the array using Lomuto partition scheme
+ * @array: array to be sorted
+ * @low: starting index of the partition
+ * @high: ending index of the partition
+ * @size: size of the array
  *
- * Description: This function sorts an array of integers in ascending order
- *              using the Bubble sort
- * algorithm. It compares each pair of adjacent elements and swaps them if
- *            they are in the wrong order. This process is repeated until
- *            the array is sorted. The array is printed after each swap.
- *
- * Time complexity:
- * Best case: O(n) (when the array is already sorted)
- * Average case: O(n^2)
- * Worst case: O(n^2) (when the array is sorted in reverse order)
+ * Return: index of the pivot
  */
+int partition(int *array, int low, int high, size_t size)
+{
+    int pivot = array[high];
+    int i = low - 1;
+    int j, tmp;
 
+    for (j = low; j <= high - 1; j++)
+    {
+        if (array[j] <= pivot)
+        {
+            i++;
+            if (i != j)
+            {
+                tmp = array[i];
+                array[i] = array[j];
+                array[j] = tmp;
+                print_array(array, size);
+            }
+        }
+    }
+    if ((i + 1) != high)
+    {
+        tmp = array[i + 1];
+        array[i + 1] = array[high];
+        array[high] = tmp;
+        print_array(array, size);
+    }
+    return (i + 1);
+}
+
+/**
+ * quicksort - recursive function to perform quick sort
+ * @array: array to be sorted
+ * @low: starting index of the partition
+ * @high: ending index of the partition
+ * @size: size of the array
+ */
+void quicksort(int *array, int low, int high, size_t size)
+{
+    if (low < high)
+    {
+        int pi = partition(array, low, high, size);
+
+        quicksort(array, low, pi - 1, size);
+        quicksort(array, pi + 1, high, size);
+    }
+}
+
+/**
+ * quick_sort - sorts an array of integers in ascending order using Quick sort
+ * @array: array to be sorted
+ * @size: size of the array
+ */
 void quick_sort(int *array, size_t size)
 {
-	size_t i, j;
-	int temp;
+    if (array == NULL || size < 2)
+        return;
 
-	if (!array || size < 2)
-	{
-		return;
-	}
-
-	for (i = 0;  i < size - 1; i++)
-	{
-		for (j = 0; j < size - i - 1; j++)
-		{
-			if (array[j] > array[j + 1])
-			{
-				temp = array[j];
-				array[j] = array[j + 1];
-				array[j + 1] = temp;
-			}
-		}
-		print_array(array, size);
-	}
+    quicksort(array, 0, size - 1, size);
 }
