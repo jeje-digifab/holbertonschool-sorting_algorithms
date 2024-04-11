@@ -1,44 +1,60 @@
 #include "sort.h"
 
 /**
- * bubble_sort - sorts an array of integers in ascending order using the
- *               Bubble sort algorithm
- * @array: pointer to the first element of the array to sort
- * @size: number of elements in the array
+ * selection_sort - sorts an array of integers in ascending order using the
+ *                  Selection sort algorithm
+ * @array: the array to be sorted
+ * @size: the size of the array
  *
- * Description: This function sorts an array of integers in ascending order
- *              using the Bubble sort
- * algorithm. It compares each pair of adjacent elements and swaps them if
- *            they are in the wrong order. This process is repeated until
- *            the array is sorted. The array is printed after each swap.
+ * Description: The function uses the Selection sort algorithm to sort the
+ *              array.
+ *
+ *              It iterates through the array, finding the minimum element and
+ *              swapping it with the first unsorted element.
+ *
+ *              This process is repeated until the entire array is sorted.
+ *              The array is printed after each swap.
+ *
+ *              If the array is NULL or its size is less than 2, the function
+ *              does not perform any operation.
  *
  * Time complexity:
- * Best case: O(n) (when the array is already sorted)
- * Average case: O(n^2)
- * Worst case: O(n^2) (when the array is sorted in reverse order)
+ * Best case: O(n^2) - The algorithm always performs the same number of
+ * operations, regardless of the input order.
+ *
+ * Average case: O(n^2) - The algorithm always performs the same number of
+ * operations, regardless of the input order.
+ *
+ * Worst case: O(n^2) - The algorithm always performs the same number of
+ * operations, regardless of the input order.
  */
 
 void selection_sort(int *array, size_t size)
 {
 	size_t i, j;
-	int temp;
+	int temp, min;
 
 	if (!array || size < 2)
 	{
-		return;
+		print_array(array, size);
 	}
+
 
 	for (i = 0;  i < size - 1; i++)
 	{
-		for (j = 0; j < size - i - 1; j++)
+		min = i;
+		for (j = i + 1; j < size; j++)
 		{
-			if (array[j] > array[j + 1])
+			if (array[j] < array[min])
 			{
-				temp = array[j];
-				array[j] = array[j + 1];
-				array[j + 1] = temp;
+				min = j;
 			}
 		}
+
+		temp = array[i];
+		array[i] = array[min];
+		array[min] = temp;
+
 		print_array(array, size);
 	}
 }
